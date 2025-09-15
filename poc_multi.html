@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Netflix ACAO / ACAC Reflection Test</title>
+</head>
+<body>
+  <h1>Netflix Cross-Origin Header Test</h1>
+  <pre id="output">Running tests...</pre>
+  <script>
+    const endpoints = [
+      "https://www.netflix.com/api/shakti/v1a7e3d37/viewingactivity",
+      "https://www.netflix.com/api/shakti/v1a7e3d37/account/viewingactivity",
+      "https://www.netflix.com/api/shakti/v1a7e3d37/profile-transfer/status",
+      "https://www.netflix.com/api/shakti/v1a7e3d37/preferences",
+      "https://www.netflix.com/api/shakti/v1a7e3d37/pathEvaluator"
+    ];
+
+    const output = document.getElementById("output");
+
+    async function testEndpoint(url) {
+      try {
+        const res = await fetch(url, {
+          method: "GET",
+          credentials: "include"
+        });
+
+        return {
+          url,
+          status: res.status,
+          aco: res.headers.get("access-control-allow-origin"),
+          acc: res.headers.get("access-control-allow-credentials")
+        };
+      } catch (err) {
+        return { url, error: err.message };
+      }
+    }
+
+    (async () => {
+      const results = [];
+      for (let url of endpoints) {
+        results.push(await testEndpoint(url));
+      }
+
+      output.textContent = results.map(r => {
+        if (r.error) return `❌ ${r.url}\nError: ${r.error}\n`;
+        return `✅ ${r.url}\nStatus: ${r.status}\nACAO: ${r.aco}\nACAC: ${r.acc}\n`;
+      }).join("\n----------------------------------------\n");
+    })();
+  </script>
+</body>
+</html>
